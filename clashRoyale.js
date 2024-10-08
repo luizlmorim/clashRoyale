@@ -4,8 +4,8 @@ db.batalhas.aggregate([
     // Filtra as batalhas dentro do intervalo de timestamps fornecido
     $match: {
       battleTime: {
-        $gte: "2020-01-01T10:00:00Z", 
-        $lte: "2020-12-31T22:00:00Z"  
+        $gte: "2020-12-31 22:00:00+00:00",
+        $lte: "2021-01-01 10:00:00+00:00"
       },
       // Verifica se a carta específica foi usada
       $or: [
@@ -67,8 +67,8 @@ db.batalhas.aggregate([
     // Filtra as batalhas dentro do intervalo de timestamps fornecido
     $match: {
       battleTime: {
-        $gte: "2020-12-31T22:00:00Z",
-        $lt: "2021-01-01T10:00:00Z"
+        $gte: "2020-12-31 22:00:00+00:00",
+        $lte: "2021-01-01 10:00:00+00:00"
       }
     }
   },
@@ -158,8 +158,8 @@ db.batalhas.aggregate([
     // Filtra as batalhas no intervalo de tempo especificado
     $match: {
       battleTime: {
-        $gte: "2020-12-31T22:00:00Z",
-        $lte: "2021-01-01T10:00:00Z"
+        $gte: "2020-12-31 22:00:00+00:00",
+        $lte: "2021-01-01 10:00:00+00:00"
       }
     }
   },
@@ -203,8 +203,8 @@ db.batalhas.aggregate([
   {
     $match: {
       "battleTime": {
-        $gte: "2020-12-31T22:00:00Z",
-        $lte: "2021-01-01T10:00:00Z"
+        $gte: "2020-12-31 22:00:00+00:00",
+        $lte: "2021-01-01 10:00:00+00:00"
       },
       $or: [
         { "winner.startingTrophies": { $gte: 5000 } },
@@ -269,8 +269,8 @@ db.batalhas.aggregate([
     // Filtrar pelo intervalo de tempo entre 22:00 de 31/12/2020 e 10:00 de 01/01/2021
     $match: {
       battleTime: {
-        $gte: "2020-12-31T22:00:00Z",
-        $lte: "2021-01-01T10:00:00Z"
+        $gte: "2020-12-31 22:00:00+00:00",
+        $lte: "2021-01-01 10:00:00+00:00"
       },
       // Filtrar por elixir médio dos jogadores
       "winner.elixir.average": { $gt: 4 },
@@ -309,8 +309,8 @@ db.decks.aggregate([
   {
     $match: {
       battleTime: {
-        $gte: ISODate("2020-12-31T22:00:00Z"), 
-        $lt: ISODate("2021-01-01T10:00:00Z")
+        $gte: "2020-12-31 22:00:00+00:00",
+        $lte: "2021-01-01 10:00:00+00:00"
       }
     }
   },
