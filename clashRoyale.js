@@ -4,24 +4,25 @@ db.batalhas.aggregate([
     // Filtra as batalhas dentro do intervalo de timestamps fornecido
     $match: {
       battleTime: {
-        $gte: "2020-12-31T22:00:00Z", 
-        $lte: "2021-01-01T10:00:00Z" 
+        $gte: "2020-01-01T10:00:00Z", 
+        $lte: "2020-12-31T22:00:00Z"  
       },
-      // Filtra as batalhas onde a carta específica foi usada, seja pelo vencedor ou pelo perdedor
+      // Verifica se a carta específica foi usada
       $or: [
-        {"winner.cards.list": {"$in": [26000008]}}, 
-        {"loser.cards.list": {"$in": [26000008]}} 
+        {"winner.cards.list": {"$in": [26000008]}}, // ID da carta no vencedor
+        {"loser.cards.list": {"$in": [26000008]}}   // ID da carta no perdedor
+      ]
     }
   },
   {
-    // Calcula o total de vitórias e derrotas com a carta
+    // Agrupa os resultados para contar vitórias e derrotas
     $group: {
       _id: null,
       totalBattles: { $sum: 1 },
       winsWithCard: {
         $sum: {
           $cond: [
-            { $in: [26000008, "$winner.cards.list"] }, // Verifica se o vencedor usou a carta
+            { $in: [26000008, "$winner.cards.list"] }, // Se a carta está no vencedor
             1,
             0
           ]
@@ -30,7 +31,7 @@ db.batalhas.aggregate([
       lossesWithCard: {
         $sum: {
           $cond: [
-            { $in: [26000008, "$loser.cards.list"] }, // Verifica se o perdedor usou a carta
+            { $in: [26000008, "$loser.cards.list"] }, // Se a carta está no perdedor
             1,
             0
           ]
@@ -45,12 +46,14 @@ db.batalhas.aggregate([
       totalBattles: 1,
       winPercentage: { 
         $multiply: [
-          { $divide: ["$winsWithCard", "$totalBattles"] }, 100 
+          { $divide: ["$winsWithCard", "$totalBattles"] }, 
+          100 
         ]
       },
       lossPercentage: { 
         $multiply: [
-          { $divide: ["$lossesWithCard", "$totalBattles"] }, 100 
+          { $divide: ["$lossesWithCard", "$totalBattles"] }, 
+          100 
         ]
       }
     }
